@@ -13,14 +13,15 @@ ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk \
     NODE_PATH=/usr/lib/node_modules \
     SRC_PATH=/usr/src \
     LANG=en_US.UTF-8 \
-    LC_ALL=en_US.UTF-8
+    LC_ALL=en_US.UTF-8 \
+    CRYPTOGRAPHY_DONT_BUILD_RUST=1
 
 WORKDIR /opt
 
 RUN set -eux; \
     addgroup -S -g ${GID} scanner-cli; \
     adduser -S -D -u ${UID} -G scanner-cli scanner-cli; \
-    apk add --no-cache --virtual build-dependencies wget unzip gnupg; \
+    apk add --no-cache --virtual build-dependencies wget unzip gnupg python3-dev py3-cffi musl-dev libffi-dev gcc; \
     apk add --no-cache git python3 py-pip bash shellcheck 'nodejs>12' 'npm>7' openjdk11-jre curl musl-locales musl-locales-lang; \
     wget -U "scannercli" -q -O /opt/sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip; \
     wget -U "scannercli" -q -O /opt/sonar-scanner-cli.zip.asc https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip.asc; \
@@ -36,7 +37,7 @@ RUN set -eux; \
     rm sonar-scanner-cli.zip sonar-scanner-cli.zip.asc; \
     mv sonar-scanner-${SONAR_SCANNER_VERSION} ${SONAR_SCANNER_HOME}; \
     pip install --no-cache-dir --upgrade pip; \
-    pip install --no-cache-dir pylint; \
+    pip install --no-cache-dir pylint 'ansible<2.10' ansible-lint; \
     apk del --purge build-dependencies; \
     mkdir -p "${SRC_PATH}" "${SONAR_USER_HOME}" "${SONAR_USER_HOME}/cache"; \
     chown -R scanner-cli:scanner-cli "${SONAR_SCANNER_HOME}" "${SRC_PATH}"; \

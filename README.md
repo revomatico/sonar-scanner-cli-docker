@@ -2,8 +2,8 @@
 
 # SonarScanner CLI
 
-This is the Git repository that contains source for [SonarScanner CLI](https://github.com/SonarSource/sonar-scanner-cli) Docker images.
-Images are available on [Docker Hub](https://hub.docker.com/r/sonarsource/sonar-scanner-cli).
+This is a fork of [SonarScanner CLI](https://github.com/SonarSource/sonar-scanner-cli) Docker images.
+Images are available on [Docker Hub](https://hub.docker.com/r/revomatico/sonar-scanner).
 
 NB: These Docker images are not compatible with C/C#/C++/Objective-C projects.
 
